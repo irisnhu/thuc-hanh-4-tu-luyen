@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-function UserList({ users }) {
+function UserList() {
+  const [users, setUsers] = useState([]);     // state lưu danh sách người dùng
+  const [loading, setLoading] = useState(true); // trạng thái loading
+
+  useEffect(() => {
+    // Gọi API từ server (đang kết nối MongoDB Atlas)
+    axios.get("http://localhost:5000/api/users")
+      .then(response => {
+        setUsers(response.data);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.error("Lỗi khi tải dữ liệu người dùng:", error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <p>Đang tải dữ liệu...</p>;
+  }
+
   return (
     <div style={{ border: "1px solid #ddd", padding: "15px", borderRadius: "8px" }}>
       <h2>Danh sách người dùng</h2>
@@ -17,8 +38,8 @@ function UserList({ users }) {
           </thead>
           <tbody>
             {users.map((u) => (
-              <tr key={u.id}>
-                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{u.id}</td>
+              <tr key={u._id}>
+                <td style={{ border: "1px solid #ddd", padding: "8px" }}>{u._id}</td>
                 <td style={{ border: "1px solid #ddd", padding: "8px" }}>{u.name}</td>
                 <td style={{ border: "1px solid #ddd", padding: "8px" }}>{u.email}</td>
               </tr>
