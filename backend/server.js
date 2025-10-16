@@ -5,9 +5,9 @@ const userRoutes = require('./routes/user');
 require('dotenv').config();
 
 const app = express();
-app.use(cors()); // Thêm dòng này
+app.use(cors());
 app.use(express.json());
-app.use('/api', userRoutes);
+app.use('/api', userRoutes); // Phải là /api
 
 mongoose.connect(process.env.MONGO_URI, {
   useNewUrlParser: true,
