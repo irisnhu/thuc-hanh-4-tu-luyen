@@ -1,8 +1,10 @@
 const User = require('../models/User');
 
 exports.getUsers = async (req, res) => {
+  console.log('getUsers called');
   try {
     const users = await User.find();
+    console.log('Users fetched:', users);
     res.status(200).json(users);
   } catch (err) {
     console.error('Lỗi khi lấy users:', err);
